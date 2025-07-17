@@ -43,7 +43,7 @@ Follow these steps to get your Simple Desktop Reminder App up and running:
     ```
 
 2.  **Ensure your reminder script is up-to-date:**
-    Make sure your `reminder.py` file contains the latest code (the one using `subprocess` for sound, and `REMINDER_INTERVAL_SECONDS = 60`). You can copy it from the last message in our conversation.
+    Make sure your `reminder.py` file contains the latest code (the one using `subprocess` for sound, and `REMINDER_INTERVAL_SECONDS = 30`). You can copy it from the last message in our conversation.
 
 3.  **Prepare your Notification Sound:**
     This app uses `iphone_ping.wav` as the notification sound.
@@ -82,7 +82,7 @@ Once setup is complete and your virtual environment is active:
     python reminder.py
     ```
 2.  **Enter your reminder task** when prompted (e.g., "Take out the trash", "Drink water").
-3.  The script will then start sending desktop notifications with sound every 60 seconds.
+3.  The script will then start sending desktop notifications with sound every 30 seconds.
 4.  **To stop the reminder:** Go to the terminal window where the script is running and press `Ctrl + C`.
 
 ## ⚙️ Customization

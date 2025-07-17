@@ -3,7 +3,7 @@ from plyer import notification
 import subprocess # For running system commands like 'aplay'
 
 # --- Configuration ---
-REMINDER_INTERVAL_SECONDS = 10
+REMINDER_INTERVAL_SECONDS = 30
 NOTIFICATION_TITLE = "Action Required!"
 APP_NAME = "Simple Reminder"
 
