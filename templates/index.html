@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Desktop Reminder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Desktop Reminder</h1>
+
+        {% if is_active %}
+            <p class="status active-status">
+                Reminder active for: "{{ task }}" (every {{ interval }}s)
+            </p>
+            <form action="/stop" method="post">
+                <input type="submit" value="Stop Reminder" class="stop-button">
+            </form>
+        {% else %}
+            <p class="status inactive-status">No reminder running.</p>
+            <form action="/start" method="post">
+                <label for="task">What to remind about?</label>
+                <input type="text" id="task" name="task" required placeholder="e.g., Take a break">
+
+                <label for="interval">Remind every (seconds):</label>
+                <input type="number" id="interval" name="interval" value="60" min="5" required>
+
+                <input type="submit" value="Start Reminder">
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
