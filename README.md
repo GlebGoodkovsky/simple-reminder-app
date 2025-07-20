@@ -1,185 +1,140 @@
 # Simple Desktop Reminder App ⏰
 
-A minimalist, web-interface reminder application designed to send persistent desktop notifications with an audible alert until manually dismissed. Works across Linux, Windows, and macOS.
+A minimalist, cross-platform desktop application that sends persistent system notifications with an audible alert. Set and manage your reminders from a simple graphical user interface.
 
 ## ✨ Features
 
-*   **Cross-Platform Compatibility:** Runs seamlessly on Linux, Windows, and macOS.
-*   **Web-based Interface:** Easily set and manage reminders from your web browser.
-*   **Customizable Reminders:** Set any task and custom interval.
-*   **Desktop Pop-up Notifications:** Leverages your operating system's native notification system for visual alerts.
-*   **Audible Alerts:** Plays a distinct sound (`iphone_ping.wav`) with each notification to ensure you don't miss it.
-*   **Continuous Reminders:** Keeps sending notifications at a set interval until manually stopped via the web interface.
-*   **Very Simple:** Minimal code and clear interaction via a local web page.
-
----
-
-## ⚠️ Important User Information
-
-### Local Desktop Application
-
-This application runs directly on your local machine. It is **not a remote web service** and cannot be accessed from outside your local network (unless specifically configured for that, which is not covered here). It interacts with your local desktop environment for notifications and sound.
-
-### Terminal Dependency
-
-For the reminder to function, the terminal window (or Command Prompt/PowerShell on Windows, Terminal on macOS) where the `python app.py` command is executed **must remain open**. Closing this terminal will stop both the web server and the reminder process.
+- **Simple GUI:** Easy-to-use window with input fields and buttons, built with Python's native Tkinter library.
+- **Cross-Platform:** Designed to run seamlessly on Linux, Windows, and macOS.
+- **Customizable Reminders:** Set any task and a custom interval (in seconds).
+- **Desktop Notifications:** Uses your operating system's native notification system for visual alerts.
+- **System Default Sound:** Plays your OS's default alert sound with each notification. No audio files needed!
+- **Self-Contained:** The application requires no external files (like `.wav` files) to function.
+- **Executable Packaging:** Can be bundled into a single executable file for easy distribution to users.
 
 ---
 
 ## 🛠️ How It Works (Tech Stack)
 
-This project combines Python web capabilities with direct system interaction to provide a robust, cross-platform reminder experience.
+This project is built with fundamental Python libraries to provide a straightforward desktop experience.
 
-*   **Python 3:** The core programming language.
-*   **Flask:** A lightweight Python web framework for handling the web interface.
-*   **`plyer`:** A cross-platform Python library used to send desktop notifications to your OS.
-*   **`subprocess` module:** Python's standard library for running external commands (used for playing sounds via native tools).
-*   **Platform-Specific Audio Tools:**
-    *   **Linux:** `aplay` (from `alsa-utils`)
-    *   **macOS:** `afplay` (built-in)
-    *   **Windows:** PowerShell's `SoundPlayer` (.NET class)
-*   **HTML/CSS:** Structures and styles the web interface.
-*   **Python Virtual Environments:** Ensures project dependencies are isolated and managed cleanly.
+- **Python 3:** The core programming language.
+- **Tkinter:** Python's standard library for building the graphical user interface and playing the system's default alert sound (`app.bell()`).
+- **`plyer`:** A cross-platform library for sending desktop notifications.
+- **`threading`:** Python's standard library for running the reminder in the background so the app doesn't freeze.
 
 ---
 
 ## 🚀 Getting Started (Setup & Usage)
 
-To set up and run this project on your machine, follow the instructions for your specific operating system.
+To run this project on your machine, follow these steps.
 
-### All Operating Systems (Common Steps)
+### 1. System Prerequisites
 
-1.  **Clone this repository (if you're starting fresh from GitHub):**
+- **Linux (e.g., Arch):**
+  - Ensure you have `python`, `python-pip`, and the `tk` package for the GUI installed.
     ```bash
-    git clone https://github.com/your_username/simple-reminder-app.git # Replace your_username
+    sudo pacman -S python python-pip tk
+    ```
+  - (Optional) For better `plyer` integration and to remove a common warning, install `python-dbus`: `sudo pacman -S python-dbus`.
+- **Windows:**
+  - Install Python 3 from [python.org](https://www.python.org/downloads/windows/), ensuring you check "Add Python to PATH" and that the "tcl/tk and IDLE" option is selected during installation.
+- **macOS:**
+  - Install Python 3 using Homebrew (`brew install python`) to ensure a modern version of Tcl/Tk is included for the GUI.
+
+### 2. Project Setup
+
+1.  **Clone this repository (or use your existing project folder):**
+    ```bash
+    git clone https://github.com/your_username/simple-reminder-app.git # Replace with your GitHub username
     cd simple-reminder-app
     ```
-    *If you've been following along, your project folder is already set up; just `cd ~/simple-reminder-app` to enter it.*
 
-2.  **Prepare your Notification Sound:**
-    The app uses `iphone_ping.wav` as the default notification sound.
-    *   If you have the original MP4 version, convert it to WAV and ensure it's in the project's root directory (`~/simple-reminder-app/`):
-        ```bash
-        # Example conversion using ffmpeg (install ffmpeg if you don't have it)
-        # Ensure your current directory in terminal is where the MP4 is located before running ffmpeg.
-        # Then, ensure 'iphone_ping.wav' is moved/copied to your project root.
-        ffmpeg -i "path/to/IPHONE NOTIFICATION SOUND EFFECT (PING／DING).mp4" iphone_ping.wav
-        ```
-    *   Verify `iphone_ping.wav` is located directly inside the `~/simple-reminder-app/` directory (next to `app.py`).
-
-3.  **Create a Python Virtual Environment:**
+2.  **Create and Activate a Virtual Environment:**
+    This isolates the project's Python packages.
     ```bash
     python -m venv venv
+    # On Linux/macOS:
+    source venv/bin/activate
+    # On Windows (CMD):
+    # venv\Scripts\activate.bat
     ```
+    Your terminal prompt should change to show `(venv)`.
 
-4.  **Activate the Virtual Environment:**
-    *   **Linux/macOS:**
-        ```bash
-        source venv/bin/activate
-        ```
-    *   **Windows (Command Prompt):**
-        ```cmd
-        venv\Scripts\activate.bat
-        ```
-    *   **Windows (PowerShell):**
-        ```powershell
-        .\venv\Scripts\Activate.ps1
-        ```
-    Your terminal prompt should change to show `(venv)` at the beginning, indicating the environment is active.
-
-5.  **Install Python Dependencies:**
-    This installs `Flask` and `plyer` (your web framework and notification library).
+3.  **Install Python Dependencies:**
+    This installs `plyer`, the only external Python library needed.
     ```bash
     pip install -r requirements.txt
     ```
 
-### Running the Application
+### 3. Running the App from Source
 
-1.  **Start the web application (after common setup and venv activation):**
-    ```bash
-    python app.py
-    ```
-    You will see messages in your terminal indicating that the Flask server is running, typically on `http://127.0.0.1:5000`.
-
-2.  **Open your web browser** and navigate to the address provided by the Flask server (e.g., `http://127.0.0.1:5000`).
-
-3.  **Use the web interface:**
-    *   Enter your reminder task and the desired interval (in seconds).
-    *   Click "Start Reminder". Notifications and sounds will begin.
-    *   To stop an active reminder, click "Stop Reminder" on the web page.
-
-4.  **To stop the web server:** Go to the terminal window where `python app.py` is running and press `Ctrl + C`.
-
-### Operating System Specific Prerequisites
-
-Beyond the common steps, ensure you have these system-level tools installed based on your OS:
-
-*   **Linux (e.g., Arch Linux KDE):**
-    ```bash
-    sudo pacman -S python       # Python 3
-    sudo pacman -S ffmpeg       # For converting audio files (if needed)
-    sudo pacman -S alsa-utils   # Provides 'aplay' for sound playback
-    sudo pacman -S python-pip   # Python's package installer
-    # sudo pacman -S python-dbus  # Optional: For better plyer integration, removes warning
-    ```
-
-*   **Windows:**
-    *   **Python 3:** Download and install from [python.org](https://www.python.org/downloads/windows/). Crucially, check "Add Python to PATH" during installation.
-    *   **ffmpeg:** Download from [ffmpeg.org](https://ffmpeg.org/download.html). Extract it and consider adding its `bin` directory to your system's PATH if you plan to use it for conversion.
-    *   PowerShell is built-in and handles sound playback.
-
-*   **macOS:**
-    *   **Python 3:** (Often pre-installed or install via Homebrew: `brew install python`).
-    *   **ffmpeg:** (Install via Homebrew: `brew install ffmpeg`)
-    *   `afplay` is built-in and handles sound playback. You may need to grant notification permissions for the Terminal app or Python itself.
+With your virtual environment active, run the application:
+```bash
+python reminder_app.py
+A desktop window will appear. Use the interface to start and stop your reminders. To close the application completely, just close its window.
+```
 
 ---
 
-## ⚙️ Customization (Source Code)
+## 📦 Packaging for End-Users (Making it a ".exe" or ".app")
 
-You can easily tailor the reminder's behavior by editing the `app.py` file in a text editor like VSCodium.
+You can use **PyInstaller** to bundle your app into a single executable file, so users don't need to install Python or any dependencies.
 
-*   **`REMINDER_INTERVAL_SECONDS`**: Change the default number of seconds in the web form's input.
-*   **`NOTIFICATION_TITLE`**: Modify the bold title that appears on the pop-up notification.
-*   **`APP_NAME`**: Change the application name that might appear in your system's notification history.
-*   **`SOUND_FILE_PATH`**: To use a different `.wav` sound, update this path. Make sure the new `.wav` file is placed in the `simple-reminder-app` directory or provide its full system path.
-*   **`app.run(port=5000)`**: Change `port=5000` to a different number if port 5000 is already in use on your system.
+1.  **Install PyInstaller** in your active virtual environment:
+    ```bash
+    pip install pyinstaller
+    ```
+
+2.  **Run the PyInstaller command:**
+    ```bash
+    pyinstaller --onefile --windowed reminder_app.py
+    ```
+    - `--onefile`: Bundles everything into a single executable.
+    - `--windowed` (or `--noconsole` on Windows): Prevents a black console window from appearing behind your app.
+    - **Note:** We no longer need `--add-data` because the app uses the system's built-in sound and requires no external files!
+
+3.  **Find your app** in the `dist/` folder that PyInstaller creates. This is the file you can share with others!
+    - **Linux:** `dist/reminder_app`
+    - **Windows:** `dist/reminder_app.exe`
+    - **macOS:** `dist/reminder_app.app` (an application bundle)
+
+---
+
+## ⚙️ Customization
+
+Edit the reminder_app.py file to change the app's behavior:
+   - Default Text: Change the text in task_entry.insert() and interval_entry.insert() to modify the default values in the input fields.
+   - Window Size: Change the values in app.geometry("400x200").
+   - Layout: Modify the .grid() calls for each widget to change its position.
 
 ---
 
 ## ⚠️ Troubleshooting
 
-*   **"Address already in use" (Flask server error):**
-    *   Another program is using port 5000 (or the port you configured).
-    *   Find the process using the port (e.g., `sudo ss -tulnp | grep 5000` on Linux) and kill it (`sudo kill PID`).
-    *   Alternatively, change the `port=` number in `app.run()` within `app.py` and restart.
-*   **"ModuleNotFoundError: No module named 'Flask'" or 'plyer':**
-    *   Ensure your virtual environment is active (`(venv)` in your terminal prompt).
-    *   Run `pip install -r requirements.txt` again while the virtual environment is active.
-*   **No desktop notifications (but script runs):**
-    *   Check your OS notification settings (e.g., "Focus Assist" on Windows, "Do Not Disturb" modes on any OS).
-    *   On macOS, you might need to manually grant notification permissions for the Terminal app or Python.
-    *   On Linux, consider installing `python-dbus` (`sudo pacman -S python-dbus`) to improve `plyer` integration.
-*   **No sound despite reminder active:**
-    *   Confirm `iphone_ping.wav` exists in the project directory and is a valid WAV file.
-    *   Check the `SOUND_FILE_PATH` in `app.py` is correct.
-    *   **Linux:** Verify `aplay` is installed (`sudo pacman -S alsa-utils`).
-    *   **Windows:** Ensure PowerShell is working correctly.
-    *   **macOS:** Ensure `afplay` is available (usually built-in).
-    *   Check your system's volume and audio output settings.
-*   **"FileNotFoundError: [Errno 2] No such file or directory: 'aplay' / 'afplay' / 'powershell'":**
-    This means the required command-line audio tool is not found in your system's PATH. Ensure it's installed (e.g., `alsa-utils` for Linux).
+- **Window doesn't appear / Tkinter error:**
+  - Ensure the `tk` package (or its equivalent for your OS/distro) is installed system-wide.
 
----
+- **"ModuleNotFoundError: No module named 'plyer'":**
+  - Make sure your virtual environment is active (`(venv)` in your terminal prompt).
+  - Run `pip install -r requirements.txt` again.
 
-## 🤝 Contributing
+- **No desktop notifications:**
+  - Check your OS's notification settings (e.g., "Focus Assist" on Windows, "Do Not Disturb" modes on any OS).
+  - On macOS, you might need to grant notification permissions for the application.
+  - On Linux, consider installing `python-dbus` to improve `plyer` integration.
 
-Suggestions and improvements are welcome! Feel free to open an issue to discuss a new feature or submit a pull request.
+- **No sound:**
+  - Check your system's master volume and audio output device. The sound played is your OS's default "alert" or "bell" sound.
+
+- **Executable not working after PyInstaller:**
+  - Try running the executable from the terminal (`./dist/reminder_app`) to see any error messages.
+  - Building for one OS produces an executable for that OS only. You must build on Windows to get a `.exe`, on macOS for a `.app`, etc.
 
 ---
 
 ## A Note on the Learning Process
 
-This project was created as a hands-on exercise to develop my programming skills. It started as a basic terminal script and evolved through various iterations, covering desktop notifications, sound integration, project organization, virtual environments, web interfaces with Flask, and cross-platform compatibility.
+This project was created as a hands-on exercise to develop a cross-platform desktop application from scratch. It demonstrates core concepts like GUI development (Tkinter), background tasks (threading), and system interaction (notifications and sound). The goal was to create a simple, understandable, yet fully functional program. I used an AI assistant as a tool to help write and, more importantly, explain the code, using it as a learning partner to grasp fundamentals step-by-step.
 
-I want to be transparent about the process: I used an AI assistant as a tool to help write and, more importantly, *explain* the code. My goal was to learn how to code *with* AI, using it as a learning partner to grasp fundamentals step-by-step. This project is a result of that learning journey.
+---
